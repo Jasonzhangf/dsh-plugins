@@ -28,7 +28,7 @@
     ],
     "generated_root": "generated/**",
     "playground_retention": "archive_then_remove",
-    "playground_root": "playground/**",
+    "playground_root": "playground/experiments/**",
     "promotion_requires": [
       "experiment_evidence",
       "architecture_review_pass",
@@ -64,32 +64,9 @@
     ],
     "runtime_forbidden_roots": [
       "playground/**",
-      "generated/**",
-      "protected/**",
-      ".appsdk-control/**"
+      "generated/**"
     ],
     "zone_transition_contract": "contracts/transitions/zone-transition-manifest.json"
-  },
-  "guidance": {
-    "compiled_manifest": ".appsdk/guidance/compiled.json",
-    "enforcement": "advisory",
-    "rule_sources": [
-      {
-        "kind": "agents",
-        "path": "AGENTS.md",
-        "precedence": 100,
-        "required": true,
-        "source_id": "project-agents"
-      },
-      {
-        "contract_path": "skills/agent-plugins-governance/appsdk-guidance.json",
-        "kind": "skill",
-        "path": "skills/agent-plugins-governance/SKILL.md",
-        "precedence": 150,
-        "required": true,
-        "source_id": "agent-plugins-governance"
-      }
-    ]
   },
   "lifecycle": {
     "stage": "contract_bound"
@@ -102,57 +79,68 @@
   },
   "modules": [
     {
-      "active_artifact": "active/lib/agent-plugins-guidance/**",
+      "active_artifact": "active/lib/agent-tui/**",
       "artifact_paths": [
-        "compiled.json"
+        "index.js",
+        "index.d.ts",
+        "startup.js",
+        "startup.d.ts",
+        "plugin-startup.js",
+        "plugin-startup.d.ts",
+        "cli.js",
+        "src/index.js",
+        "src/index.d.ts",
+        "src/cli.js",
+        "src/cli.d.ts",
+        "src/plugin-startup.js",
+        "src/plugin-startup.d.ts"
       ],
       "build": {
         "args": [
           "-c",
-          "appsdk guide compile . && mkdir -p generated/modules/agent-plugins-guidance/lib && cp .appsdk/guidance/compiled.json generated/modules/agent-plugins-guidance/lib/compiled.json"
+          "pnpm run build:runtime && mkdir -p generated/modules/agent-tui/lib && cp -R lib/. generated/modules/agent-tui/lib/"
         ],
         "program": "sh",
         "working_directory": "."
       },
       "contract_paths": [
-        "contracts/**"
+        "contracts/records/**",
+        "contracts/transitions/**",
+        "contracts/tui/**"
       ],
       "dependency_modules": [],
       "generated_outputs": [
-        "generated/modules/agent-plugins-guidance/**"
+        "generated/modules/agent-tui/**"
       ],
-      "module_id": "agent-plugins-guidance",
+      "module_id": "agent-tui",
       "owned_paths": [
-        ".appsdk-prepare.json",
-        ".appsdk/goal.json",
-        ".appsdk/maps/**",
-        "AGENTS.md",
-        "MEMORY.md",
-        "note.md",
+        "src/**",
         "contracts/**",
-        "docs/governance/**",
-        "skills/agent-plugins-governance/**"
+        "tests/**",
+        "scripts/**",
+        ".gitignore",
+        ".npmignore",
+        "cordis.patch.yml",
+        "package.json",
+        "pnpm-lock.yaml",
+        "README.md",
+        "runtime.tsconfig.json",
+        "tsconfig.json"
       ],
       "regression": {
         "allow_skipped": false,
         "command": {
           "args": [
-            "guide",
-            "compile",
-            "."
+            "run",
+            "test:runtime"
           ],
-          "program": "appsdk",
+          "program": "pnpm",
           "working_directory": "."
         },
         "input_paths": [
-          ".appsdk/goal.json",
-          ".appsdk/maps/**",
-          "AGENTS.md",
-          "MEMORY.md",
-          "note.md",
-          "contracts/**",
-          "docs/governance/**",
-          "skills/agent-plugins-governance/**"
+          "src/**",
+          "contracts/tui/**",
+          "tests/**"
         ],
         "minimum_test_count": 1,
         "ordinary_mode_after_freeze": "disabled",
@@ -164,13 +152,13 @@
           "dependency_change"
         ],
         "required_before_freeze": true,
-        "suite_id": "agent-plugins-guidance-regression"
+        "suite_id": "agent-tui-regression"
       },
-      "source_owner": "agent-plugins-guidance",
+      "source_owner": "agent-tui",
       "stage": "source_implemented"
     }
   ],
-  "project_id": "agent-plugins",
+  "project_id": "agent-tui",
   "schema_version": 1,
   "sdk": {
     "bundle_manifest": ".appsdk/contracts/sdk-bundle.manifest.json",
